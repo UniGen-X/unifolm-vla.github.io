@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UnifoLM-VLA-0: Vision-Language-Action Foundation Model</title>
+  <style>
+    /* ========== Base Styles ========== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #2c3e50;
+      --accent: #3498db;
+      --accent-dark: #1a365d;
+      --text: #333;
+      --text-light: #666;
+      --bg: #ffffff;
+      --bg-alt: #f8f9fa;
+      --border: #e5e7eb;
+      --shadow: rgba(0, 0, 0, 0.06);
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+      line-height: 1.7;
+      color: var(--text);
+      background-color: var(--bg);
+    }
+
+    /* ========== Layout ========== */
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    section {
+      padding: 3rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    section:last-of-type {
+      border-bottom: none;
+    }
+
+    /* ========== Typography ========== */
+    h1, h2, h3 {
+      color: var(--primary);
+      font-weight: 600;
+      line-height: 1.3;
+    }
+
+    h1 {
+      font-size: 2.25rem;
+      margin-bottom: 0.5rem;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--accent);
+      display: inline-block;
+    }
+
+    h3 {
+      font-size: 1.1rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .subsection-title {
+      font-size: 1.25rem;
+      color: var(--primary);
+      margin-top: 2.5rem;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .subsection-title:first-of-type {
+      margin-top: 0;
+    }
+
+    p {
+      margin-bottom: 1rem;
+      color: var(--text);
+    }
+
+    .subtitle {
+      font-size: 1rem;
+      color: var(--text-light);
+      margin-bottom: 1.5rem;
+    }
+
+    /* ========== Header ========== */
+    header {
+      background: var(--bg-alt);
+      padding: 2.5rem 0;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+
+    .lang-toggle {
+      position: absolute;
+      top: 1rem;
+      right: 1.5rem;
+      display: flex;
+      gap: 0.25rem;
+      background: var(--bg);
+      border-radius: 6px;
+      padding: 0.25rem;
+      box-shadow: 0 1px 3px var(--shadow);
+    }
+
+    .lang-toggle button {
+      background: transparent;
+      border: none;
+      padding: 0.4rem 0.75rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      color: var(--text-light);
+      transition: all 0.2s ease;
+    }
+
+    .lang-toggle button:hover {
+      color: var(--primary);
+    }
+
+    .lang-toggle button.active {
+      background: var(--accent);
+      color: white;
+    }
+
+    nav {
+      margin-top: 1.5rem;
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      color: var(--text-light);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s ease;
+    }
+
+    nav a:hover {
+      color: var(--accent);
+    }
+
+    /* ========== Language Visibility ========== */
+    .lang {
+      display: none;
+    }
+
+    .lang.en {
+      display: inline;
+    }
+
+    body.lang-zh .lang.zh {
+      display: inline;
+    }
+
+    body.lang-zh .lang.en {
+      display: none;
+    }
+
+    /* Block level language elements */
+    .lang-block {
+      display: none;
+    }
+
+    .lang-block.en {
+      display: block;
+    }
+
+    body.lang-zh .lang-block.zh {
+      display: block;
+    }
+
+    body.lang-zh .lang-block.en {
+      display: none;
+    }
+
+    /* ========== Feature Cards ========== */
+    .features {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .feature-card {
+      background: var(--bg-alt);
+      padding: 1.5rem;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+
+    .feature-card h3 {
+      color: var(--accent-dark);
+      margin-bottom: 0.5rem;
+    }
+
+    .feature-card p {
+      font-size: 0.95rem;
+      color: var(--text-light);
+      margin-bottom: 0;
+    }
+
+    /* ========== Demo Video Section ========== */
+    .video-placeholder {
+      background: var(--bg-alt);
+      border: 2px dashed var(--border);
+      border-radius: 8px;
+      padding: 3rem;
+      text-align: center;
+      color: var(--text-light);
+    }
+
+    .main-video-container {
+      position: relative;
+      width: 100%;
+      padding-top: 56.25%; /* 16:9 aspect ratio */
+      background: #000;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .main-video-container video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    /* ========== VLM Carousel ========== */
+    .carousel-container {
+      position: relative;
+      background: var(--bg-alt);
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .carousel-wrapper {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .carousel-track {
+      display: flex;
+      transition: transform 0.4s ease;
+    }
+
+    .carousel-slide {
+      min-width: 100%;
+      padding: 1.5rem;
+    }
+
+    .slide-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+    }
+
+    .sample-card {
+      background: var(--bg);
+      border-radius: 6px;
+      padding: 1rem;
+      border: 1px solid var(--border);
+    }
+
+    .prompt-box {
+      background: var(--bg-alt);
+      padding: 0.75rem;
+      border-radius: 4px;
+      margin-bottom: 1rem;
+      border-left: 3px solid var(--accent);
+    }
+
+    .prompt-label {
+      font-size: 0.7rem;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.25rem;
+    }
+
+    .prompt-text {
+      font-size: 0.9rem;
+      color: var(--text);
+    }
+
+    .images-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+    }
+
+    .images-grid.single {
+      grid-template-columns: 1fr;
+    }
+
+    .image-wrapper {
+      border-radius: 4px;
+      overflow: hidden;
+      background: var(--bg-alt);
+    }
+
+    .image-wrapper img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .carousel-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      color: var(--text);
+      box-shadow: 0 2px 6px var(--shadow);
+      transition: all 0.2s ease;
+      z-index: 10;
+    }
+
+    .carousel-nav:hover {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+
+    .carousel-nav:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
+    .carousel-nav:disabled:hover {
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .carousel-nav.prev {
+      left: 10px;
+    }
+
+    .carousel-nav.next {
+      right: 10px;
+    }
+
+    .carousel-indicators {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 1rem;
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+    }
+
+    .carousel-indicators button {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      border: none;
+      background: var(--border);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      padding: 0;
+    }
+
+    .carousel-indicators button.active {
+      background: var(--accent);
+      width: 24px;
+      border-radius: 4px;
+    }
+
+    .task-badge {
+      display: block;
+      text-align: center;
+      padding: 0.4rem 0.75rem;
+      background: var(--accent);
+      color: white;
+      font-size: 0.75rem;
+      border-radius: 3px;
+      letter-spacing: 0.3px;
+      margin-top: 0.75rem;
+    }
+
+    /* ========== Benchmark Section ========== */
+    .benchmark-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    .benchmark-card {
+      background: var(--bg-alt);
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .benchmark-card h3 {
+      padding: 1rem;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      margin: 0;
+      font-size: 0.95rem;
+    }
+
+    .benchmark-card img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* ========== Video Gallery ========== */
+    .video-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .video-card {
+      background: var(--bg-alt);
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      transition: box-shadow 0.2s ease;
+    }
+
+    .video-card:hover {
+      box-shadow: 0 4px 12px var(--shadow);
+    }
+
+    .video-container {
+      position: relative;
+      width: 100%;
+      padding-top: 56.25%; /* 16:9 */
+      background: #000;
+    }
+
+    .video-container video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .video-info {
+      padding: 1rem;
+    }
+
+    .video-desc {
+      font-size: 0.85rem;
+      color: var(--text-light);
+      line-height: 1.5;
+    }
+
+    /* ========== Footer ========== */
+    footer {
+      background: var(--bg-alt);
+      padding: 2rem 0;
+      text-align: center;
+      border-top: 1px solid var(--border);
+    }
+
+    footer p {
+      font-size: 0.85rem;
+      color: var(--text-light);
+      margin: 0;
+    }
+
+    /* ========== Responsive ========== */
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 1.75rem;
+      }
+
+      h2 {
+        font-size: 1.25rem;
+      }
+
+      .features {
+        grid-template-columns: 1fr;
+      }
+
+      nav {
+        gap: 1rem;
+      }
+
+      .lang-toggle {
+        position: relative;
+        top: 0;
+        right: 0;
+        justify-content: center;
+        margin-bottom: 1rem;
+      }
+
+      header {
+        padding-top: 1.5rem;
+      }
+
+      .images-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .video-gallery {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 0 1rem;
+      }
+
+      section {
+        padding: 2rem 0;
+      }
+
+      .carousel-slide {
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+<body class="lang-en">
+  <!-- Header -->
+  <header>
+    <div class="container">
+      <div class="lang-toggle">
+        <button class="lang-btn active" data-lang="en">EN</button>
+        <button class="lang-btn" data-lang="zh">中文</button>
+      </div>
+      
+      <h1>UnifoLM-VLA-0</h1>
+      <p class="subtitle">
+        <span class="lang en">A Vision-Language-Action Foundation Model for General Robotic Manipulation</span>
+        <span class="lang zh">面向通用机器人操作的视觉-语言-动作基础模型</span>
+      </p>
+      
+      <!-- <nav>
+        <a href="#introduction">
+          <span class="lang en">Introduction</span>
+          <span class="lang zh">介绍</span>
+        </a>
+        <a href="#method">
+          <span class="lang en">Method</span>
+          <span class="lang zh">方法</span>
+        </a>
+        <a href="#experiments">
+          <span class="lang en">Experiments</span>
+          <span class="lang zh">真机实验</span>
+        </a>
+      </nav> -->
+    </div>
+  </header>
+
+  <!-- Introduction Section -->
+  <section id="introduction">
+    <div class="container">
+      <h2>
+        <span class="lang en">Introduction</span>
+        <span class="lang zh">介绍</span>
+      </h2>
+      
+      <div class="lang-block en">
+        <p>
+          <strong>UnifoLM-VLA-0</strong> is a Vision-Language-Action (VLA) foundation model within the UnifoLM series, specifically engineered for general-purpose robotic manipulation. Designed to overcome the limitations of traditional Vision-Language Models (VLMs) in physical interaction, this model achieves an evolution from general "image-text understanding" to an "embodied brain" possessing physical commonsense through continual pre-training on robotic manipulation data.
+        </p>
+      </div>
+      
+      <div class="lang-block zh">
+        <p>
+          <strong>UnifoLM-VLA-0</strong> 是 UnifoLM 系列下面向通用机器人操作设计的视觉-语言-动作（VLA）基础模型。该模型旨在突破传统 VLM 在物理交互中的局限，通过在机器人操作数据上的继续预训练，实现了从通用"图文理解"向具备物理常识的"具身大脑"的进化。
+        </p>
+      </div>
+
+      <div class="features">
+        <div class="feature-card">
+          <h3>
+            <span class="lang en">Spatial Semantic Enhancement</span>
+            <span class="lang zh">空间语义增强</span>
+          </h3>
+          <p>
+            <span class="lang en">Addressing the high-precision demands of manipulation tasks, the model deeply integrates text instructions with 2D/3D spatial details through continual pre-training, thereby significantly enhancing its spatial perception capabilities.</span>
+            <span class="lang zh">针对操作任务的对指令和图像理解需求，模型通过继续预训练深度融合了文本指令与2D/3D空间细节，增强了模型的空间感知能力。</span>
+          </p>
+        </div>
+        <div class="feature-card">
+          <h3>
+            <span class="lang en">General Manipulation Generalization</span>
+            <span class="lang zh">通用操作泛化</span>
+          </h3>
+          <p>
+            <span class="lang en">By constructing data for full dynamics prediction, the model demonstrates superior task generalization. A single policy can successfully execute 12 categories of complex manipulation tasks in physical environments.</span>
+            <span class="lang zh">构建了全链路动力学预测数据，模型具备更好的任务泛化性。在真机验证中，仅需单一策略即可高质量完成 12 类复杂的操作任务。</span>
+          </p>
+        </div>
+      </div>
+
+      <!-- Demo Video Placeholder -->
+      <div class="video-placeholder" style="margin-top: 2rem;">
+        <p>
+          <span class="lang en">Demo video coming soon</span>
+          <span class="lang zh">演示视频即将上线</span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Method Section: Model Overview + Spatial Reasoning + Benchmark -->
+  <section id="method">
+    <div class="container">
+      <h2>
+        <span class="lang en">Method</span>
+        <span class="lang zh">方法</span>
+      </h2>
+      
+      <!-- Model Overview -->
+      <h3 class="subsection-title">
+        <span class="lang en">Model Overview</span>
+        <span class="lang zh">模型概览</span>
+      </h3>
+      
+      <div class="lang-block en">
+        <p>
+          Built upon the <strong>Qwen2.5-VL-7B</strong> model, we constructed a comprehensive multi-task dataset covering both robotic and general scenarios for continual pre-training. This multidimensional dataset encompasses 2D detection and segmentation, hierarchical task decomposition, 3D object detection, spatial reasoning, and trajectory prediction, improving the model's ability to align geometric space with semantic logic.
+        </p>
+        <p>
+          For manipulation tasks, we utilized the <strong>Open-X</strong> dataset to construct discrete actions. The model integrates action chunking prediction strategies with both forward and inverse dynamics action prediction. This endows the VLM with the capacity to comprehend physical interaction laws and perform long-horizon action planning.
+        </p>
+      </div>
+      
+      <div class="lang-block zh">
+        <p>
+          基于 <strong>Qwen2.5-VL-7B</strong> 模型，我们构建了涵盖机器人与通用场景的多任务数据集进行继续预训练。该数据集包括了2D检测与分割、任务层级分解、3D目标检测、空间位置推理及轨迹预测等多维数据，提升模型对几何空间与语义逻辑的对齐能力。
+        </p>
+        <p>
+          针对操作任务，我们进一步清洗了 <strong>Open-X</strong> 和<strong>星海图</strong>开源数据集，最终用了340小时的机器人数据构建了离散动作，模型集成了动作分块预测策略、前向动力学及逆向动力学动作预测，从而赋予了 VLM 模型理解物理交互规律并进行长程动作规划的能力。
+        </p>
+      </div>
+
+      <!-- Spatial Reasoning -->
+      <h3 class="subsection-title">
+        <span class="lang en">Spatial Reasoning Capabilities</span>
+        <span class="lang zh">空间推理能力</span>
+      </h3>
+      
+      <p>
+        <span class="lang en">The following examples demonstrate the spatial reasoning and perception capabilities of UnifoLM-VLA-0 across different task types.</span>
+        <span class="lang zh">基于上述构建的数据集我们继续预训练得到了 UnifoLM-VLM-0，以下示例展示了 UnifoLM-VLM-0 在不同任务类型上的空间推理和感知能力。</span>
+      </p>
+
+      <!-- Carousel -->
+      <div class="carousel-container">
+        <div class="carousel-wrapper">
+          <button class="carousel-nav prev" id="carouselPrev" aria-label="Previous">‹</button>
+          <button class="carousel-nav next" id="carouselNext" aria-label="Next">›</button>
+          
+          <div class="carousel-track" id="carouselTrack">
+            <!-- Slide 1: Task Inference -->
+            <div class="carousel-slide">
+              <div class="slide-content">
+                <div class="sample-card">
+                  <div class="prompt-box">
+                    <div class="prompt-label">Prompt</div>
+                    <div class="prompt-text">
+                      <span class="lang en">Place the red block on the black area.</span>
+                      <span class="lang zh">将红色方块放置在黑色区域上。</span>
+                    </div>
+                  </div>
+                  <div class="images-grid">
+                    <div class="image-wrapper">
+                      <img src="assets/raw_data/task_infer_01_input.jpg" alt="Input" loading="lazy">
+                    </div>
+                    <div class="image-wrapper">
+                      <img src="assets/unitree_vlm_opensource_images/task_infer_01_output.jpg" alt="Output" loading="lazy">
+                    </div>
+                  </div>
+                  <span class="task-badge">
+                    <span class="lang en">Task Inference</span>
+                    <span class="lang zh">任务推理：根据文本推理目标物体和位置并生成移动轨迹</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Slide 2: Trajectory Planning -->
+            <div class="carousel-slide">
+              <div class="slide-content">
+                <div class="sample-card">
+                  <div class="prompt-box">
+                    <div class="prompt-label">Prompt</div>
+                    <div class="prompt-text">
+                      <span class="lang en">Pick up the pencil box</span>
+                      <span class="lang zh">拿起铅笔盒</span>
+                    </div>
+                  </div>
+                  <div class="images-grid">
+                    <div class="image-wrapper">
+                      <img src="assets/raw_data/trajectory_01_input.jpg" alt="Input" loading="lazy">
+                    </div>
+                    <div class="image-wrapper">
+                      <img src="assets/unitree_vlm_opensource_images/trajectory_01_output.jpg" alt="Output" loading="lazy">
+                    </div>
+                  </div>
+                  <span class="task-badge">
+                    <span class="lang en">Trajectory Planning</span>
+                    <span class="lang zh">轨迹规划：根据文本生成到达目标物体的移动轨迹</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Slide 3: Affordance -->
+            <div class="carousel-slide">
+              <div class="slide-content">
+                <div class="sample-card">
+                  <div class="prompt-box">
+                    <div class="prompt-label">Prompt</div>
+                    <div class="prompt-text">
+                      <span class="lang en">Pick up the green marker pencil</span>
+                      <span class="lang zh">拿起绿色马克笔</span>
+                    </div>
+                  </div>
+                  <div class="images-grid">
+                    <div class="image-wrapper">
+                      <img src="assets/raw_data/affordance_01_input.jpg" alt="Input" loading="lazy">
+                    </div>
+                    <div class="image-wrapper">
+                      <img src="assets/unitree_vlm_opensource_images/affordance_01_output.jpg" alt="Output" loading="lazy">
+                    </div>
+                  </div>
+                  <span class="task-badge">
+                    <span class="lang en">Affordance</span>
+                    <span class="lang zh">可操作性：根据文本推理目标物体的可抓取位置</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Slide 4: Spatial Reasoning -->
+            <div class="carousel-slide">
+              <div class="slide-content">
+                <div class="sample-card">
+                  <div class="prompt-box">
+                    <div class="prompt-label">Prompt</div>
+                    <div class="prompt-text">
+                      <span class="lang en">The empty space between the pencil close to right pencil in the image</span>
+                      <span class="lang zh">图像中靠近右侧铅笔的铅笔之间的空隙</span>
+                    </div>
+                  </div>
+                  <div class="images-grid single">
+                    <div class="image-wrapper">
+                      <img src="assets/unitree_vlm_opensource_images/spatial_reasoning_01_output.jpg" alt="Output" loading="lazy">
+                    </div>
+                  </div>
+                </div>
+                <div class="sample-card">
+                  <div class="prompt-box">
+                    <div class="prompt-label">Prompt</div>
+                    <div class="prompt-text">
+                      <span class="lang en">The empty space between the pencil close to left pencil in the image</span>
+                      <span class="lang zh">图像中靠近左侧铅笔的铅笔之间的空隙</span>
+                    </div>
+                  </div>
+                  <div class="images-grid single">
+                    <div class="image-wrapper">
+                      <img src="assets/unitree_vlm_opensource_images/spatial_reasoning_02_output.jpg" alt="Output" loading="lazy">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <span class="task-badge" style="margin: 1rem 1.5rem 1.5rem;">
+                <span class="lang en">Spatial Reasoning</span>
+                <span class="lang zh">空间推理：理解空间的位置关系</span>
+              </span>
+            </div>
+
+            <!-- Slide 5: 3D Grounding -->
+            <div class="carousel-slide">
+              <div class="slide-content">
+                <div class="sample-card">
+                  <div class="prompt-box">
+                    <div class="prompt-label">Prompt</div>
+                    <div class="prompt-text">
+                      <span class="lang en">Detect the 3D bounding boxes of the objects in the image.</span>
+                      <span class="lang zh">检测图像中物体的3D边界框。</span>
+                    </div>
+                  </div>
+                  <div class="images-grid">
+                    <div class="image-wrapper">
+                      <img src="assets/unitree_vlm_opensource_images/grounding_3d_01_output.png" alt="Output 1" loading="lazy">
+                    </div>
+                    <div class="image-wrapper">
+                      <img src="assets/unitree_vlm_opensource_images/bag_3d_bbox.png" alt="Output 2" loading="lazy">
+                    </div>
+                  </div>
+                  <span class="task-badge">
+                    <span class="lang en">3D Grounding</span>
+                    <span class="lang zh">3D 定位：检测图像中物体的3D框</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Slide 6: 2D Grounding & Segmentation -->
+            <div class="carousel-slide">
+              <div class="slide-content">
+                <div class="sample-card">
+                  <div class="prompt-box">
+                    <div class="prompt-label">Prompt</div>
+                    <div class="prompt-text">
+                      <span class="lang en">A blue towel on the desk.</span>
+                      <span class="lang zh">桌子上的一条蓝色毛巾。</span>
+                    </div>
+                  </div>
+                  <div class="images-grid single">
+                    <div class="image-wrapper">
+                      <img src="assets/unitree_vlm_opensource_images/grounding_2d_seg_01_output.png" alt="Output" loading="lazy">
+                    </div>
+                  </div>
+                </div>
+                <div class="sample-card">
+                  <div class="prompt-box">
+                    <div class="prompt-label">Prompt</div>
+                    <div class="prompt-text">
+                      <span class="lang en">A schoolbag on the desk.</span>
+                      <span class="lang zh">桌子上的一个书包。</span>
+                    </div>
+                  </div>
+                  <div class="images-grid single">
+                    <div class="image-wrapper">
+                      <img src="assets/unitree_vlm_opensource_images/grounding_2d_seg_02_output.png" alt="Output" loading="lazy">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <span class="task-badge" style="margin: 1rem 1.5rem 1.5rem;">
+                <span class="lang en">2D Grounding & Segmentation</span>
+                <span class="lang zh">2D 定位与分割：检测图像中物体的2D边界框和分割掩码</span>
+              </span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="carousel-indicators" id="carouselIndicators"></div>
+      </div>
+
+      <!-- Benchmark Results -->
+      <h3 class="subsection-title">
+        <span class="lang en">Benchmark Results</span>
+        <span class="lang zh">评测结果</span>
+      </h3>
+      
+      <p>
+        <span class="lang en">To quantitatively evaluate the improvement in spatial perception, we evaluated the model across three spatial understanding benchmarks. The results indicate significant performance improvement.</span>
+        <span class="lang zh">为了量化评估模型空间感知能力的提升效果，我们在三个空间理解基准上对模型进行了评估，结果显示模型得到较大提升。</span>
+      </p>
+
+      <div class="benchmark-card">
+        <h3>
+          <span class="lang en">Spatial Understanding Benchmark</span>
+          <span class="lang zh">空间理解基准</span>
+        </h3>
+        <img src="assets/unitree_vlm_opensource_images/benchmark.png" alt="Spatial Understanding Benchmark" loading="lazy">
+      </div>
+
+      <p style="margin-top: 1.5rem;">
+        <span class="lang en">We conducted experimental validation of multi-task training in both simulated and real-world environments. The results demonstrate the model's general capability to handle multiple tasks using a single model. In the LIBERO simulation environment, our multi-task model approaches state-of-the-art performance.</span>
+        <span class="lang zh">我们基于 UnifoLM-VLM-0 和动作头构建了 UnifoLM-VLA-0，在仿真环境与真机实验中进行了多任务训练的实验验证，结果表明该模型可以实现一个模型完成多个任务的通用能力，LIBERO 仿真环境，我们的多任务模型接近最好效果的模型。</span>
+      </p>
+
+      <div class="benchmark-card">
+        <h3>
+          <span class="lang en">LIBERO Simulation Benchmark</span>
+          <span class="lang zh">LIBERO 仿真基准</span>
+        </h3>
+        <img src="assets/unitree_vlm_opensource_images/LIBERO_benchmark.png" alt="LIBERO Benchmark" loading="lazy">
+      </div>
+    </div>
+  </section>
+
+  <!-- Real Robot Experiments Section -->
+  <section id="experiments">
+    <div class="container">
+      <h2>
+        <span class="lang en">Real Robot Experiments</span>
+        <span class="lang zh">真机实验</span>
+      </h2>
+      
+      <p>
+        <span class="lang en">We utilized the Unitree G1 robot to collect data on 12 complex tasks, each requiring multiple steps for completion. We trained a single policy model based on UnifoLM-VLA-0 for all tasks. This unified model successfully executes all tasks and exhibits robustness against human interference.</span>
+        <span class="lang zh">我们用宇树G1机器人采集了12个复杂的任务，每个任务都会涉及到多个步骤才能完成任务，UnifoLM-VLA-0 在所有任务上只训练一个策略模型，这个模型可以完成所有任务并且可以接受人为干扰。</span>
+      </p>
+
+      <div class="video-gallery" id="videoGallery">
+        <!-- Videos will be dynamically inserted here -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>
+        <span class="lang en">UnifoLM-VLA-0 &copy; 2024. All rights reserved.</span>
+        <span class="lang zh">UnifoLM-VLA-0 &copy; 2024. 保留所有权利。</span>
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    // ========== Language Toggle ==========
+    const langButtons = document.querySelectorAll('.lang-btn');
+    const body = document.body;
+
+    langButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const lang = btn.dataset.lang;
+        body.className = `lang-${lang}`;
+        langButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        
+        // Update video descriptions
+        updateVideoDescriptions(lang);
+      });
+    });
+
+    // ========== Carousel ==========
+    const carouselTrack = document.getElementById('carouselTrack');
+    const prevBtn = document.getElementById('carouselPrev');
+    const nextBtn = document.getElementById('carouselNext');
+    const indicatorsContainer = document.getElementById('carouselIndicators');
+    const slides = carouselTrack.querySelectorAll('.carousel-slide');
+    
+    let currentIndex = 0;
+    const totalSlides = slides.length;
+
+    // Create indicators
+    slides.forEach((_, index) => {
+      const indicator = document.createElement('button');
+      indicator.setAttribute('aria-label', `Go to slide ${index + 1}`);
+      if (index === 0) indicator.classList.add('active');
+      indicator.addEventListener('click', () => goToSlide(index));
+      indicatorsContainer.appendChild(indicator);
+    });
+
+    function updateCarousel() {
+      carouselTrack.style.transform = `translateX(-${currentIndex * 100}%)`;
+      
+      document.querySelectorAll('#carouselIndicators button').forEach((ind, idx) => {
+        ind.classList.toggle('active', idx === currentIndex);
+      });
+      
+      prevBtn.disabled = currentIndex === 0;
+      nextBtn.disabled = currentIndex === totalSlides - 1;
+    }
+
+    function goToSlide(index) {
+      currentIndex = index;
+      updateCarousel();
+    }
+
+    function nextSlide() {
+      if (currentIndex < totalSlides - 1) {
+        currentIndex++;
+        updateCarousel();
+      }
+    }
+
+    function prevSlide() {
+      if (currentIndex > 0) {
+        currentIndex--;
+        updateCarousel();
+      }
+    }
+
+    prevBtn.addEventListener('click', prevSlide);
+    nextBtn.addEventListener('click', nextSlide);
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') prevSlide();
+      if (e.key === 'ArrowRight') nextSlide();
+    });
+
+    updateCarousel();
+
+    // ========== Video Gallery ==========
+    const videoData = [
+      { id: 'bag', en: 'Picking up a pencil case, placing it into a backpack, and zipping the backpack closed.', zh: '拿起笔袋，放入背包，并拉上背包拉链。' },
+      { id: 'drug', en: 'Opening a medicine bottle and pouring the pills into a box.', zh: '打开药瓶，将药丸倒入盒子中。' },
+      { id: 'fold_tower', en: 'Straighten the towel, fold it into a square, and place it aside.', zh: '铺平毛巾，将其折叠成正方形，然后放在一旁。' },
+      { id: 'pencil_box', en: 'Organize the pencil case by adjusting its position, placing the pens and eraser inside, and then closing it.', zh: '整理文具盒，调整其位置，将钢笔和橡皮擦放入其中，然后合上。' },
+      { id: 'pingpang', en: 'Picking up a ping-pong paddle, placing it into a case, closing the lid, and zipping it up.', zh: '拿起乒乓球拍，放入拍套中，盖上盖子并拉上拉链。' },
+      { id: 'sort_fruits', en: 'Sorting fruits by placing the watermelon in the pink plate, the banana in the yellow plate, and the avocado in the green plate.', zh: '对水果进行分类，将西瓜放入粉色盘子，香蕉放入黄色盘子，牛油果放入绿色盘子。' },
+      { id: 'stack_block', en: 'Stacking colored blocks in a specific order: red at the bottom, green in the middle, and yellow on top.', zh: '按特定顺序堆叠彩色积木：红色在底部，绿色在中间，黄色在顶部。' },
+      { id: 'tools', en: 'Picking up tools from a table and placing them in their designated storage positions on a pegboard and in a cup.', zh: '从桌上拿起工具，将其放置在挂板和杯子中的指定存放位置。' },
+      { id: 'wipe_table', en: 'Taking a cloth and wiping a spill off the table.', zh: '拿一块抹布，擦掉桌上的污渍。' }
+    ];
+
+    const videoGallery = document.getElementById('videoGallery');
+    const currentLang = body.classList.contains('lang-zh') ? 'zh' : 'en';
+
+    function renderVideos() {
+      const lang = body.classList.contains('lang-zh') ? 'zh' : 'en';
+      
+      videoGallery.innerHTML = videoData.map(video => `
+        <div class="video-card">
+          <div class="video-container">
+            <video 
+              controls 
+              preload="none" 
+              playsinline
+              data-src="assets/unitree_opensource_videos/mp4/${video.id}.mp4"
+            >
+              <source data-src="assets/unitree_opensource_videos/mp4/${video.id}.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="video-info">
+            <div class="video-desc" data-en="${video.en}" data-zh="${video.zh}">${video[lang]}</div>
+          </div>
+        </div>
+      `).join('');
+
+      // Setup lazy loading for videos
+      setupVideoLazyLoading();
+    }
+
+    function updateVideoDescriptions(lang) {
+      document.querySelectorAll('.video-desc').forEach(desc => {
+        desc.textContent = desc.dataset[lang];
+      });
+    }
+
+    // ========== Video Lazy Loading ==========
+    function setupVideoLazyLoading() {
+      const videos = document.querySelectorAll('video[data-src]');
+      
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const video = entry.target;
+            const source = video.querySelector('source[data-src]');
+            
+            if (source && source.dataset.src) {
+              source.src = source.dataset.src;
+              video.src = video.dataset.src;
+              video.load();
+              
+              // Remove data-src to prevent reloading
+              delete video.dataset.src;
+              delete source.dataset.src;
+            }
+            
+            observer.unobserve(video);
+          }
+        });
+      }, {
+        rootMargin: '100px',
+        threshold: 0.1
+      });
+
+      videos.forEach(video => observer.observe(video));
+    }
+
+    // Initialize
+    renderVideos();
+  </script>
+</body>
+</html>
