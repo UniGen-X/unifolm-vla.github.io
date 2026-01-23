@@ -437,7 +437,7 @@
     /* ========== Video Gallery ========== */
     .video-gallery {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      grid-template-columns: repeat(2, 1fr);
       gap: 1.5rem;
     }
 
@@ -1033,8 +1033,9 @@
         <div class="video-card">
           <div class="video-container">
             <video 
-              controls 
-              preload="none" 
+              autoplay
+              muted
+              loop
               playsinline
               data-src="assets/unitree_opensource_videos/mp4/${video.id}.mp4"
             >
@@ -1072,6 +1073,11 @@
               video.src = video.dataset.src;
               video.load();
               
+              // Start playing when loaded
+              video.addEventListener('loadeddata', () => {
+                video.play().catch(() => {});
+              }, { once: true });
+              
               // Remove data-src to prevent reloading
               delete video.dataset.src;
               delete source.dataset.src;
@@ -1081,7 +1087,7 @@
           }
         });
       }, {
-        rootMargin: '100px',
+        rootMargin: '200px',
         threshold: 0.1
       });
 
