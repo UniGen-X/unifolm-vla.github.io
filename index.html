@@ -453,6 +453,57 @@
       display: block;
     }
 
+    /* Benchmark Table */
+    .benchmark-card .benchmark-table {
+      margin: 0;
+    }
+
+    .benchmark-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+
+    .benchmark-table th,
+    .benchmark-table td {
+      padding: 0.6rem 0.8rem;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .benchmark-table th {
+      background: var(--bg);
+      font-weight: 600;
+      color: var(--primary);
+      font-size: 0.8rem;
+    }
+
+    .benchmark-table th:first-child,
+    .benchmark-table td:first-child {
+      text-align: left;
+    }
+
+    .benchmark-table tbody tr:hover {
+      background: var(--bg);
+    }
+
+    .benchmark-table tr.highlight {
+      background: rgba(52, 152, 219, 0.1);
+    }
+
+    .benchmark-table tr.highlight:hover {
+      background: rgba(52, 152, 219, 0.15);
+    }
+
+    .benchmark-table tr.highlight td:first-child {
+      font-weight: 600;
+    }
+
+    .benchmark-table .best {
+      font-weight: 700;
+      color: var(--accent-dark);
+    }
+
     /* ========== Video Gallery ========== */
     .video-gallery {
       display: grid;
@@ -935,7 +986,100 @@
           <span class="lang en">LIBERO Simulation Benchmark</span>
           <span class="lang zh">LIBERO 仿真基准</span>
         </h3>
-        <img src="assets/unitree_vlm_opensource_images/LIBERO_benchmark.png" alt="LIBERO Benchmark" loading="lazy">
+        <table class="benchmark-table">
+          <thead>
+            <tr>
+              <th>Model</th>
+              <th>LIBERO-Spatial</th>
+              <th>LIBERO-Goal</th>
+              <th>LIBERO-Object</th>
+              <th>LIBERO-Long</th>
+              <th>Average</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>GR00T-N1</td>
+              <td>94.4</td>
+              <td>97.6</td>
+              <td>93.0</td>
+              <td>90.6</td>
+              <td>93.9</td>
+            </tr>
+            <tr>
+              <td>π0</td>
+              <td>98.0</td>
+              <td>96.8</td>
+              <td>94.4</td>
+              <td>88.4</td>
+              <td>94.4</td>
+            </tr>
+            <tr>
+              <td>F1</td>
+              <td>98.2</td>
+              <td>97.8</td>
+              <td>95.4</td>
+              <td>91.3</td>
+              <td>95.7</td>
+            </tr>
+            <tr>
+              <td>InternVLA-M1</td>
+              <td>98.0</td>
+              <td>99.0</td>
+              <td>93.8</td>
+              <td>92.6</td>
+              <td>95.9</td>
+            </tr>
+            <tr>
+              <td>π0.5</td>
+              <td>98.8</td>
+              <td>98.2</td>
+              <td>98.0</td>
+              <td>92.4</td>
+              <td>96.9</td>
+            </tr>
+            <tr>
+              <td>OpenVLA-OFT</td>
+              <td>97.6</td>
+              <td>98.4</td>
+              <td>97.9</td>
+              <td>94.5</td>
+              <td>97.1</td>
+            </tr>
+            <tr>
+              <td>X-VLA</td>
+              <td>98.2</td>
+              <td>98.6</td>
+              <td>97.8</td>
+              <td class="best">97.6</td>
+              <td>98.1</td>
+            </tr>
+            <tr>
+              <td>EO1</td>
+              <td class="best">99.7</td>
+              <td>99.8</td>
+              <td>99.2</td>
+              <td>94.8</td>
+              <td>98.2</td>
+            </tr>
+            <tr>
+              <td>Being-H0.5</td>
+              <td>99.2</td>
+              <td>99.6</td>
+              <td class="best">99.4</td>
+              <td>97.4</td>
+              <td class="best">98.9</td>
+            </tr>
+            <tr class="highlight">
+              <td><strong>UnifoLM-VLA</strong></td>
+              <td>99.2</td>
+              <td class="best">100</td>
+              <td>99.0</td>
+              <td>95.4</td>
+              <td>98.4</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </section>
