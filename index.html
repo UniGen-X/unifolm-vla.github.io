@@ -622,12 +622,18 @@
         </div>
       </div>
 
-      <!-- Demo Video Placeholder -->
-      <div class="video-placeholder" style="margin-top: 2rem;">
-        <p>
-          <span class="lang en">Demo video coming soon</span>
-          <span class="lang zh">演示视频即将上线</span>
-        </p>
+      <!-- Demo Video -->
+      <div class="main-video-container" style="margin-top: 2rem;">
+        <video 
+          autoplay
+          muted
+          loop
+          controls 
+          playsinline
+          src="assets/unitree_opensource_videos/mp4/UnifoLM-VLA-0.mp4"
+        >
+          <source src="assets/unitree_opensource_videos/mp4/UnifoLM-VLA-0.mp4" type="video/mp4">
+        </video>
       </div>
     </div>
   </section>
@@ -1012,6 +1018,7 @@
 
     // ========== Video Gallery ==========
     const videoData = [
+      { id: 'two_robot', en: 'Collaborate with a nearby partner to tidy the table.', zh: '与附近的一位伙伴合作，整理桌面。' },
       { id: 'bag', en: 'Picking up a pencil case, placing it into a backpack, and zipping the backpack closed.', zh: '拿起笔袋，放入背包，并拉上背包拉链。' },
       { id: 'drug', en: 'Opening a medicine bottle and pouring the pills into a box.', zh: '打开药瓶，将药丸倒入盒子中。' },
       { id: 'fold_tower', en: 'Straighten the towel, fold it into a square, and place it aside.', zh: '铺平毛巾，将其折叠成正方形，然后放在一旁。' },
@@ -1020,7 +1027,9 @@
       { id: 'sort_fruits', en: 'Sorting fruits by placing the watermelon in the pink plate, the banana in the yellow plate, and the avocado in the green plate.', zh: '对水果进行分类，将西瓜放入粉色盘子，香蕉放入黄色盘子，牛油果放入绿色盘子。' },
       { id: 'stack_block', en: 'Stacking colored blocks in a specific order: red at the bottom, green in the middle, and yellow on top.', zh: '按特定顺序堆叠彩色积木：红色在底部，绿色在中间，黄色在顶部。' },
       { id: 'tools', en: 'Picking up tools from a table and placing them in their designated storage positions on a pegboard and in a cup.', zh: '从桌上拿起工具，将其放置在挂板和杯子中的指定存放位置。' },
-      { id: 'wipe_table', en: 'Taking a cloth and wiping a spill off the table.', zh: '拿一块抹布，擦掉桌上的污渍。' }
+      { id: 'wipe_table', en: 'Taking a cloth and wiping a spill off the table.', zh: '拿一块抹布，擦掉桌上的污渍。' },
+      { id: 'blackboard', en: 'Take the eraser and clean the blackboard.', zh: '拿一块橡皮擦擦黑板。' },
+      { id: 'clean_table', en: 'Organize and tidy the items on the table.', zh: '整理桌上的物品。' }
     ];
 
     const videoGallery = document.getElementById('videoGallery');
