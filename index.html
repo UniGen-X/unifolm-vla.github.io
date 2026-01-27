@@ -634,7 +634,7 @@
       <h1>UnifoLM-VLA-0</h1>
       <p class="subtitle">
         <span class="lang en">A Vision-Language-Action Foundation Model for General Robotic Manipulation</span>
-        <span class="lang zh">面向通用机器人操作的视觉-语言-动作基础模型</span>
+        <span class="lang zh">面向通用人形机器人操作的视觉-语言-动作大模型</span>
       </p>
       
       <div class="external-links">
@@ -675,7 +675,7 @@
       
       <div class="lang-block zh">
         <p>
-          <strong>UnifoLM-VLA-0</strong> 是 UnifoLM 系列下面向通用机器人操作设计的视觉-语言-动作（VLA）基础模型。该模型旨在突破传统 VLM 在物理交互中的局限，通过在机器人操作数据上的继续预训练，实现了从通用"图文理解"向具备物理常识的"具身大脑"的进化。
+          <strong>UnifoLM-VLA-0</strong> 是 UnifoLM 系列下面向通用人形机器人操作的视觉-语言-动作（VLA）大模型。该模型旨在突破传统 VLM 在物理交互中的局限，通过在机器人操作数据上的继续预训练，实现了从通用"图文理解"向具备物理常识的"具身大脑"的进化。
         </p>
       </div>
 
@@ -687,7 +687,7 @@
           </h3>
           <p>
             <span class="lang en">Addressing the high-precision demands of manipulation tasks, the model deeply integrates text instructions with 2D/3D spatial details through continual pre-training, thereby significantly enhancing its spatial perception capabilities.</span>
-            <span class="lang zh">针对操作任务的对指令和图像理解需求，模型通过继续预训练深度融合了文本指令与2D/3D空间细节，增强了模型的空间感知能力。</span>
+            <span class="lang zh">针对操作任务的对指令和图像理解需求，模型通过继续预训练深度融合了文本指令与2D/3D空间细节，<strong>增强了模型的空间感知能力。</strong></span>
           </p>
         </div>
         <div class="feature-card">
@@ -697,7 +697,7 @@
           </h3>
           <p>
             <span class="lang en">By constructing data for full dynamics prediction, the model demonstrates superior task generalization. A single policy can successfully execute 12 categories of complex manipulation tasks in physical environments.</span>
-            <span class="lang zh">构建了全链路动力学预测数据，模型具备更好的任务泛化性。在真机验证中，仅需单一策略即可高质量完成 12 类复杂的操作任务。</span>
+            <span class="lang zh">构建了全链路动力学预测数据，模型具备更好的任务泛化性。在真机验证中，<strong>仅需单一策略即可高质量完成 12 类复杂的操作任务。</strong></span>
           </p>
         </div>
       </div>
@@ -743,10 +743,11 @@
       
       <div class="lang-block zh">
         <p>
-          基于 <strong>Qwen2.5-VL-7B</strong> 模型，我们构建了涵盖机器人与通用场景的多任务数据集进行继续预训练。该数据集包括了2D检测与分割、任务层级分解、3D目标检测、空间位置推理及轨迹预测等多维数据，提升模型对几何空间与语义逻辑的对齐能力。
+          基于 <strong>Qwen2.5-VL-7B</strong> 模型，我们构建了覆盖机器人与通用场景的多任务数据集，并开展持续预训练。该数据集涵盖 2D 检测与分割、任务层级分解、3D 目标检测、空间位置推理及轨迹预测等多维数据，有效提升了模型对几何空间与语义逻辑的对齐能力。
         </p>
         <p>
-          针对操作任务，我们进一步清洗了 <strong>Open-X</strong> 和<strong>星海图</strong>开源数据集，最终用了<strong>340小时</strong>的机器人数据构建了离散动作，模型集成了动作分块预测策略、前向动力学及逆向动力学动作预测，从而赋予了 VLM 模型理解物理交互规律并进行长程动作规划的能力。
+          <!-- 针对操作任务，我们进一步清洗了 <strong>Open-X</strong> 和<strong>星海图</strong>开源数据集，最终用了<strong>340小时</strong>的机器人数据构建了离散动作，模型集成了动作分块预测策略、前向动力学及逆向动力学动作预测，从而赋予了 VLM 模型理解物理交互规律并进行长程动作规划的能力。 -->
+          针对操作类任务，我们对 <strong>Open-X</strong> 与<strong>星海图</strong>等开源数据集进行了系统化清洗，最终仅利用约 <strong>340</strong> 小时的真机数据，进行离散动作的预测训练。在此基础上，模型集成了动作分块预测，以及前向与逆向动力学约束，实现对动作序列的统一建模，从而使 VLM 具备对机器人与物体物理交互规律的深度理解能力，并支持长时序动作规划与决策。
         </p>
       </div>
 
@@ -758,7 +759,8 @@
       
       <p>
         <span class="lang en">The following examples demonstrate the spatial reasoning and perception capabilities of UnifoLM-VLA-0 across different task types.</span>
-        <span class="lang zh">基于上述构建的数据集我们继续预训练得到了 UnifoLM-VLM-0，以下示例展示了 UnifoLM-VLM-0 在不同任务类型上的空间推理和感知能力。</span>
+        <!-- <span class="lang zh">基于上述构建的数据集我们继续预训练得到了 UnifoLM-VLM-0，以下示例展示了 UnifoLM-VLM-0 在不同任务类型上的空间推理和感知能力。</span> -->
+         <span class="lang zh">基于上述构建的数据集开展持续预训练后，我们获得了 <strong>UnifoLM-VLM-0</strong>。该模型在多类任务场景下展现出显著增强的空间推理能力与可靠的多模态感知性能，相关零样本测试示例如下：</span>
       </p>
 
       <!-- Carousel -->
@@ -965,7 +967,7 @@
       
       <p>
         <span class="lang en">To quantitatively evaluate the improvement in spatial perception, we evaluated the model across three spatial understanding benchmarks. The results indicate significant performance improvement.</span>
-        <span class="lang zh">为了量化评估模型空间感知能力的提升效果，我们在三个空间理解基准上对模型进行了评估，结果显示模型得到较大提升。</span>
+        <span class="lang zh">我们在三个空间理解基准上对模型进行了评估，结果显示：模型在空间感知与理解能力上较 Qwen2.5-VL-7B 有显著提升，并且在 “no thinking” 模式下可比肩 Gemini-Robotics-ER 1.5。</span>
       </p>
 
       <div class="benchmark-card">
@@ -978,7 +980,8 @@
 
       <p style="margin-top: 1.5rem;">
         <span class="lang en">We conducted experimental validation of multi-task training in both simulated and real-world environments. The results demonstrate the model's general capability to handle multiple tasks using a single model. In the LIBERO simulation environment, our multi-task model approaches state-of-the-art performance.</span>
-        <span class="lang zh">我们基于 UnifoLM-VLM-0 和动作头构建了 UnifoLM-VLA-0，在仿真环境与真机实验中进行了多任务训练的实验验证，结果表明该模型可以实现一个模型完成多个任务的通用能力，LIBERO 仿真环境，我们的多任务模型接近最好效果的模型。</span>
+        <!-- <span class="lang zh">我们基于 UnifoLM-VLM-0 和动作头构建了 UnifoLM-VLA-0，在仿真环境与真机实验中进行了多任务训练的实验验证，结果表明该模型可以实现一个模型完成多个任务的通用能力，LIBERO 仿真环境，我们的多任务模型接近最好效果的模型。</span> -->
+        <span class="lang zh">我们在 <strong>UnifoLM-VLM-0</strong> 模型的基础上集成了动作预测头（Action Head），从而构建出 <strong>UnifoLM-VLA-0</strong>。经由仿真环境与真机实验的多任务训练验证，结果显示该模型具备单模型处理多任务的通用能力，在 LIBERO 仿真基准测试中，我们的多任务模型取得了最优的性能。</span>
       </p>
 
       <div class="benchmark-card">
@@ -991,60 +994,28 @@
             <tr>
               <th>Model</th>
               <th>LIBERO-Spatial</th>
-              <th>LIBERO-Goal</th>
               <th>LIBERO-Object</th>
+              <th>LIBERO-Goal</th>
               <th>LIBERO-Long</th>
               <th>Average</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>GR00T-N1</td>
-              <td>94.4</td>
-              <td>97.6</td>
-              <td>93.0</td>
-              <td>90.6</td>
-              <td>93.9</td>
-            </tr>
-            <tr>
-              <td>π0</td>
-              <td>98.0</td>
-              <td>96.8</td>
-              <td>94.4</td>
-              <td>88.4</td>
-              <td>94.4</td>
-            </tr>
-            <tr>
-              <td>F1</td>
-              <td>98.2</td>
-              <td>97.8</td>
-              <td>95.4</td>
-              <td>91.3</td>
-              <td>95.7</td>
-            </tr>
-            <tr>
-              <td>InternVLA-M1</td>
-              <td>98.0</td>
+            <tr class="highlight">
+              <td>UnifoLM-VLA-0</td>
+              <td>99.2</td>
+              <td class="best">100</td>
               <td>99.0</td>
-              <td>93.8</td>
-              <td>92.6</td>
-              <td>95.9</td>
+              <td>95.4</td>
+              <td class="best">98.4</td>
             </tr>
             <tr>
-              <td>π0.5</td>
-              <td>98.8</td>
+              <td>EO1</td>
+              <td class="best">99.7</td>
+              <td>99.8</td>
+              <td class="best">99.2</td>
+              <td>94.8</td>
               <td>98.2</td>
-              <td>98.0</td>
-              <td>92.4</td>
-              <td>96.9</td>
-            </tr>
-            <tr>
-              <td>OpenVLA-OFT</td>
-              <td>97.6</td>
-              <td>98.4</td>
-              <td>97.9</td>
-              <td>94.5</td>
-              <td>97.1</td>
             </tr>
             <tr>
               <td>X-VLA</td>
@@ -1055,28 +1026,84 @@
               <td>98.1</td>
             </tr>
             <tr>
-              <td>EO1</td>
-              <td class="best">99.7</td>
-              <td>99.8</td>
-              <td>99.2</td>
-              <td>94.8</td>
-              <td>98.2</td>
+              <td>OpenVLA-OFT</td>
+              <td>97.6</td>
+              <td>98.4</td>
+              <td>97.9</td>
+              <td>94.5</td>
+              <td>97.1</td>
             </tr>
             <tr>
-              <td>Being-H0.5</td>
-              <td>99.2</td>
-              <td>99.6</td>
-              <td class="best">99.4</td>
-              <td>97.4</td>
-              <td class="best">98.9</td>
+              <td>GR00T-N1.6</td>
+              <td>97.7</td>
+              <td>98.5</td>
+              <td>97.5</td>
+              <td>94.4</td>
+              <td>97.0</td>
             </tr>
-            <tr class="highlight">
-              <td><strong>UnifoLM-VLA</strong></td>
-              <td>99.2</td>
-              <td class="best">100</td>
-              <td>99.0</td>
-              <td>95.4</td>
+            <tr>
+              <td>π0.5</td>
+              <td>98.8</td>
+              <td>98.2</td>
+              <td>98.0</td>
+              <td>92.4</td>
+              <td>96.9</td>
+            </tr>
+            <tr>
+              <td>MemoryVLA</td>
               <td>98.4</td>
+              <td>98.4</td>
+              <td>96.4</td>
+              <td>93.4</td>
+              <td>96.6</td>
+            </tr>
+            <tr>
+              <td>InternVLA-M1</td>
+              <td>98.0</td>
+              <td>99.0</td>
+              <td>93.8</td>
+              <td>92.6</td>
+              <td>95.9</td>
+            </tr>
+            <tr>
+              <td>F1</td>
+              <td>98.2</td>
+              <td>97.8</td>
+              <td>95.4</td>
+              <td>91.3</td>
+              <td>95.7</td>
+            </tr>
+            <tr>
+              <td>π0</td>
+              <td>98.0</td>
+              <td>96.8</td>
+              <td>94.4</td>
+              <td>88.4</td>
+              <td>94.4</td>
+            </tr>
+            <tr>
+              <td>GR00T-N1</td>
+              <td>94.4</td>
+              <td>97.6</td>
+              <td>93.0</td>
+              <td>90.6</td>
+              <td>93.9</td>
+            </tr>
+            <tr>
+              <td>CogACT</td>
+              <td>97.2</td>
+              <td>98.0</td>
+              <td>90.2</td>
+              <td>88.8</td>
+              <td>93.2</td>
+            </tr>
+            <tr>
+              <td>π0 + FAST</td>
+              <td>96.4</td>
+              <td>96.8</td>
+              <td>88.6</td>
+              <td>60.2</td>
+              <td>85.5</td>
             </tr>
           </tbody>
         </table>
@@ -1094,7 +1121,8 @@
       
       <p>
         <span class="lang en">We utilized the Unitree G1 robot to collect data on 12 complex tasks, each requiring multiple steps for completion. We trained a single policy model based on UnifoLM-VLA-0 for all tasks. This unified model successfully executes all tasks and exhibits robustness against human interference.</span>
-        <span class="lang zh">我们用宇树G1机器人采集了12个复杂的任务，每个任务都会涉及到多个步骤才能完成任务，UnifoLM-VLA-0 在所有任务上只训练一个策略模型，这个模型可以完成所有任务并且可以接受人为干扰。</span>
+        <!-- <span class="lang zh">我们用<a href="https://www.unitree.com/g1/" target="_blank" rel="noopener noreferrer">宇树G1机器人</a>构建了包含12项具有长程时序依赖的复杂操作任务数据集，<strong>UnifoLM-VLA-0</strong> 采用单一策略网络进行统一训练，不仅能同时完成这12项任务而且在面临真实世界不可预测的动态干扰时展现出任务恢复能力。以下是我们12个任务的演示视频，每个任务在执行过程中都会有人为干扰：</span> -->
+        <span class="lang zh">在<a href="https://www.unitree.com/g1/" target="_blank" rel="noopener noreferrer">宇树 G1</a>人形机器人平台上，我们构建了覆盖 12 类复杂操作任务的高质量真机数据集，并基于此对 <strong>UnifoLM-VLA-0</strong> 进行单一策略网络的统一端到端训练。真机实验结果表明，该模型能够在同一策略 checkpoint 下，稳定完成全部 12 项任务，在外部扰动条件下仍保持良好的执行鲁棒性与抗干扰能力。<strong>UnifoLM-VLA-0</strong> 在 12 个复杂操作任务 上的真机运行效果视频如下：</span>
       </p>
 
       <div class="video-gallery" id="videoGallery">
@@ -1218,6 +1246,7 @@
               autoplay
               muted
               loop
+              controls
               playsinline
               data-src="assets/unitree_opensource_videos/mp4/${video.id}.mp4"
             >
