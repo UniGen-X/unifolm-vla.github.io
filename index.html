@@ -682,7 +682,7 @@
       
       <div class="lang-block en">
         <p>
-          <strong>UnifoLM-VLA-0</strong> is a Vision-Language-Action (VLA) large model within the UnifoLM series, designed for general-purpose humanoid robot manipulation. This model aims to transcend the limitations of traditional VLMs in physical interaction. Through continued pre-training on robot manipulation data, it achieves an evolution from general "vision-language understanding" to an "embodied brain" equipped with physical common sense.
+          <strong>UnifoLM-VLA-0</strong> is a Vision–Language–Action (VLA) large model in the UnifoLM series, designed for general-purpose humanoid robot manipulation. It goes beyond the limitations of conventional Vision–Language Models (VLMs) in physical interaction. Through continued pre-training on robot manipulation data, the model evolves from "vision-language understanding" to an "embodied brain" equipped with physical common sense.
         </p>
       </div>
       
@@ -699,17 +699,17 @@
             <span class="lang zh">空间语义增强</span>
           </h3>
           <p>
-            <span class="lang en">To address the requirements for instruction and image understanding in manipulation tasks, the model deeply integrates textual instructions with 2D/3D spatial details through continued pre-training, <strong>enhancing its spatial perception capabilities.</strong></span>
+            <span class="lang en">To address the requirements for instruction comprehension and spatial understanding in manipulation tasks, the model deeply integrates textual instructions with 2D/3D spatial details through continued pre-training, <strong>substantially strengthening its spatial perception and geometric understanding capabilities.</strong></span>
             <span class="lang zh">针对操作类任务中对指令理解与空间感知的高要求，模型通过继续预训练深度融合了文本指令与2D/3D空间细节，<strong>增强了模型的空间感知能力。</strong></span>
           </p>
         </div>
         <div class="feature-card">
           <h3>
-            <span class="lang en">General Manipulation Generalization</span>
+            <span class="lang en">Manipulation Generalization</span>
             <span class="lang zh">通用操作泛化</span>
           </h3>
           <p>
-            <span class="lang en">By constructing full dynamics prediction data, the model demonstrates enhanced task generalization. In real-robot validation, <strong>it can complete 12 categories of complex manipulation tasks with high quality using only a single policy.</strong></span>
+            <span class="lang en">By leveraging full dynamics prediction data, the model achieves strong generalization across diverse manipulation tasks. In real-robot validation, <strong>it can complete 12 categories of complex manipulation tasks with high quality using only a single policy.</strong></span>
             <span class="lang zh">构建了全链路动力学预测数据，模型具备更好的任务泛化性。在真机验证中，<strong>仅需单一策略即可高质量完成 12 类复杂的操作任务。</strong></span>
           </p>
         </div>
@@ -747,10 +747,10 @@
       
       <div class="lang-block en">
         <p>
-          Building upon the <strong>Qwen2.5-VL-7B</strong> model, we constructed a multi-task dataset covering both robotic and general scenarios and conducted continued pre-training. This dataset encompasses multi-dimensional data including 2D detection and segmentation, hierarchical task decomposition, 3D object detection, spatial reasoning, and trajectory prediction, effectively enhancing the model's alignment between geometric space and semantic logic.
+          Building on the <strong>Qwen2.5-VL-7B</strong> backbone, we perform continued pre-training using a multi-task dataset that spans both robotic and general-purpose scenarios. The dataset integrates diverse supervision signals, including 2D detection and segmentation, hierarchical task decomposition, 3D object detection, spatial reasoning, and trajectory prediction. This multi-dimensional training setup substantially strengthens the model's alignment between geometric space and semantic logic.
         </p>
         <p>
-          For manipulation tasks, we systematically cleaned open-source datasets such as <strong>Open-X</strong> and <strong>Galaxea</strong>, ultimately utilizing only approximately <strong>340</strong> hours of real-robot data for discrete action prediction training. Building on this, the model integrates action chunking prediction, as well as forward and inverse dynamics constraints, to achieve unified modeling of action sequences. This endows the VLM with a deep understanding of the physical interaction dynamics between robots and objects, enabling long-horizon action planning and decision-making.
+          For manipulation tasks, we systematically curated open-source datasets, including <strong>Open-X</strong> and <strong>Galaxea</strong>, ultimately retaining approximately <strong>340</strong> hours of high-quality real-robot data for discrete action prediction training.  Building on this, the model integrates action chunking prediction, as well as forward and inverse dynamics constraints, to achieve unified modeling of action sequences. This endows the VLM with a deep understanding of the physical interaction dynamics between robots and objects, enabling long-horizon action planning and decision-making.
         </p>
       </div>
       
@@ -1012,7 +1012,7 @@
       </h3>
       
       <p>
-        <span class="lang en">We evaluated the model across three spatial understanding benchmarks. The results indicate that the model achieves significant improvements in spatial perception and understanding capabilities compared to Qwen2.5-VL-7B, and is comparable to Gemini-Robotics-ER 1.5 in "no thinking" mode.</span>
+        <span class="lang en">We evaluated the model across three spatial understanding benchmarks. The results indicate that the model achieves significant improvements in spatial perception and understanding capabilities compared to Qwen2.5-VL-7B, and the model is competitive with Gemini-Robotics-ER 1.5 in "no thinking" mode.</span>
         <span class="lang zh">我们在三个空间理解基准上对模型进行了评估，结果显示：模型在空间感知与理解能力上较 Qwen2.5-VL-7B 有显著提升，并且在 “no thinking” 模式下可比肩 Gemini-Robotics-ER 1.5。</span>
       </p>
 
@@ -1025,7 +1025,7 @@
       </div>
 
       <p style="margin-top: 1.5rem;">
-        <span class="lang en">We constructed <strong>UnifoLM-VLA-0</strong> by integrating an Action Head into the <strong>UnifoLM-VLM-0</strong> model. Validated through multi-task training in both simulation environments and real-robot experiments, the results demonstrate the model's general capability to handle multiple tasks with a single model. On the LIBERO simulation benchmark, our multi-task model achieved state-of-the-art performance.</span>
+        <span class="lang en">We developed <strong>UnifoLM-VLA-0</strong> by incorporating an Action Head into the <strong>UnifoLM-VLM-0</strong> model. Validated through multi-task training in both simulation environments and real-robot experiments, the results highlight the model's broad capability to handle diverse tasks with a single model checkpoint. On the LIBERO simulation benchmark, <strong>UnifoLM-VLA-0</strong> achieved highly competitive performance as outlined below:</span>
         <!-- <span class="lang zh">我们基于 UnifoLM-VLM-0 和动作头构建了 UnifoLM-VLA-0，在仿真环境与真机实验中进行了多任务训练的实验验证，结果表明该模型可以实现一个模型完成多个任务的通用能力，LIBERO 仿真环境，我们的多任务模型接近最好效果的模型。</span> -->
         <span class="lang zh">我们在 <strong>UnifoLM-VLM-0</strong> 模型的基础上集成了动作预测头（Action Head），从而构建出 <strong>UnifoLM-VLA-0</strong>。经由仿真环境与真机实验的多任务训练验证，结果显示该模型具备单模型处理多任务的通用能力，在 LIBERO 仿真基准测试中，我们的多任务模型取得了接近最优的性能。</span>
       </p>
@@ -1166,7 +1166,7 @@
       </h2>
       
       <p>
-        <span class="lang en">On the <a href="https://www.unitree.com/g1/" target="_blank" rel="noopener noreferrer">Unitree G1 </a>humanoid robot platform, we constructed a high-quality real-robot dataset covering 12 categories of complex manipulation tasks and conducted unified end-to-end training of a single policy network for <strong>UnifoLM-VLA-0</strong>. Real-robot experimental results demonstrate that the model can stably complete all 12 tasks using <strong>a single policy checkpoint</strong>, maintaining robust execution and anti-interference capabilities even under external disturbances. The videos demonstrating the real-robot performance of <strong>UnifoLM-VLA-0</strong> on these 12 complex manipulation tasks are as follows:</span>
+        <span class="lang en">On the <a href="https://www.unitree.com/g1/" target="_blank" rel="noopener noreferrer">Unitree G1 </a>humanoid robot platform, we developed a high-quality real-robot dataset covering 12 categories of complex manipulation tasks and conducted unified end-to-end training for <strong>UnifoLM-VLA-0</strong>. Empirical results demonstrate that the model can reliably complete all 12 tasks using <strong>a single policy checkpoint</strong>, maintaining stable performance and robust anti-interference capabilities even under external disturbances. The following videos showcase the real-robot performance of <strong>UnifoLM-VLA-0</strong> on these 12 diverse manipulation tasks:</span>
         <!-- <span class="lang zh">我们用<a href="https://www.unitree.com/g1/" target="_blank" rel="noopener noreferrer">宇树G1机器人</a>构建了包含12项具有长程时序依赖的复杂操作任务数据集，<strong>UnifoLM-VLA-0</strong> 采用单一策略网络进行统一训练，不仅能同时完成这12项任务而且在面临真实世界不可预测的动态干扰时展现出任务恢复能力。以下是我们12个任务的演示视频，每个任务在执行过程中都会有人为干扰：</span> -->
         <span class="lang zh">在<a href="https://www.unitree.com/g1/" target="_blank" rel="noopener noreferrer">宇树 G1</a>人形机器人平台上，我们构建了覆盖 12 类复杂操作任务的高质量真机数据集，并基于此对 <strong>UnifoLM-VLA-0</strong> 进行单一策略网络的统一端到端训练。真机实验结果表明，该模型能够在<strong>同一策略 checkpoint</strong> 下，稳定完成全部 12 项任务，在外部扰动条件下仍保持良好的执行鲁棒性与抗干扰能力。<strong>UnifoLM-VLA-0</strong> 在 12 个复杂操作任务 上的真机运行效果视频如下：</span>
       </p>
