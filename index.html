@@ -641,8 +641,8 @@
       
       <h1>UnifoLM-VLA-0</h1>
       <p class="subtitle">
-        <span class="lang en">A Vision-Language-Action Foundation Model for General Robotic Manipulation</span>
-        <span class="lang zh">面向通用人形机器人单一策略多任务操作的视觉-语言-动作大模型</span>
+        <span class="lang en">A Vision-language-Action Model for General-Purpose Manipulation</span>
+        <span class="lang zh">面向通用人形机器人操作的视觉-语言-动作大模型</span>
       </p>
       
       <p class="highlight-text">
@@ -664,7 +664,7 @@
           <span>Datasets</span>
         </a>
 
-        <a href="https://huggingface.co/unitreerobotics/Unifolm-VLA-Base" target="_blank" rel="noopener noreferrer" class="external-link">
+        <a href="https://huggingface.co/unitreerobotics/UnifoLM-VLA-Base" target="_blank" rel="noopener noreferrer" class="external-link">
           <img src="https://huggingface.co/front/assets/huggingface_logo-noborder.svg" alt="HF" style="width: 18px; height: 18px;">
           <span>Models</span>
         </a>
@@ -700,7 +700,7 @@
           </h3>
           <p>
             <span class="lang en">To address the requirements for instruction and image understanding in manipulation tasks, the model deeply integrates textual instructions with 2D/3D spatial details through continued pre-training, <strong>enhancing its spatial perception capabilities.</strong></span>
-            <span class="lang zh">针对操作任务的对指令和图像理解需求，模型通过继续预训练深度融合了文本指令与2D/3D空间细节，<strong>增强了模型的空间感知能力。</strong></span>
+            <span class="lang zh">针对操作类任务中对指令理解与空间感知的高要求，模型通过继续预训练深度融合了文本指令与2D/3D空间细节，<strong>增强了模型的空间感知能力。</strong></span>
           </p>
         </div>
         <div class="feature-card">
@@ -735,7 +735,7 @@
   <section id="method">
     <div class="container">
       <h2>
-        <span class="lang en">Method</span>
+        <span class="lang en">Approach</span>
         <span class="lang zh">方法</span>
       </h2>
       
@@ -1027,7 +1027,7 @@
       <p style="margin-top: 1.5rem;">
         <span class="lang en">We constructed <strong>UnifoLM-VLA-0</strong> by integrating an Action Head into the <strong>UnifoLM-VLM-0</strong> model. Validated through multi-task training in both simulation environments and real-robot experiments, the results demonstrate the model's general capability to handle multiple tasks with a single model. On the LIBERO simulation benchmark, our multi-task model achieved state-of-the-art performance.</span>
         <!-- <span class="lang zh">我们基于 UnifoLM-VLM-0 和动作头构建了 UnifoLM-VLA-0，在仿真环境与真机实验中进行了多任务训练的实验验证，结果表明该模型可以实现一个模型完成多个任务的通用能力，LIBERO 仿真环境，我们的多任务模型接近最好效果的模型。</span> -->
-        <span class="lang zh">我们在 <strong>UnifoLM-VLM-0</strong> 模型的基础上集成了动作预测头（Action Head），从而构建出 <strong>UnifoLM-VLA-0</strong>。经由仿真环境与真机实验的多任务训练验证，结果显示该模型具备单模型处理多任务的通用能力，在 LIBERO 仿真基准测试中，我们的多任务模型取得了最优的性能。</span>
+        <span class="lang zh">我们在 <strong>UnifoLM-VLM-0</strong> 模型的基础上集成了动作预测头（Action Head），从而构建出 <strong>UnifoLM-VLA-0</strong>。经由仿真环境与真机实验的多任务训练验证，结果显示该模型具备单模型处理多任务的通用能力，在 LIBERO 仿真基准测试中，我们的多任务模型取得了接近最优的性能。</span>
       </p>
 
       <div class="benchmark-card">
@@ -1049,11 +1049,11 @@
           <tbody>
             <tr class="highlight">
               <td>UnifoLM-VLA-0</td>
-              <td>99.2</td>
-              <td class="best">100</td>
               <td>99.0</td>
-              <td>95.4</td>
-              <td class="best">98.4</td>
+              <td class="best">100</td>
+              <td>99.4</td>
+              <td>96.2</td>
+              <td class="best">98.7</td>
             </tr>
             <tr>
               <td>EO1</td>
@@ -1181,8 +1181,8 @@
   <footer>
     <div class="container">
       <p>
-        <span class="lang en">UnifoLM-VLA-0 &copy; 2024. All rights reserved.</span>
-        <span class="lang zh">UnifoLM-VLA-0 &copy; 2024. 保留所有权利。</span>
+        <span class="lang en">UnifoLM-VLA-0 &copy; 2026. All rights reserved.</span>
+        <span class="lang zh">UnifoLM-VLA-0 &copy; 2026. 保留所有权利。</span>
       </p>
     </div>
   </footer>
@@ -1269,7 +1269,7 @@
       { id: 'bag', en: 'Picking up a pencil case, placing it into a backpack, and zipping the backpack closed.', zh: '拿起笔袋，放入背包，并拉上背包拉链。' },
       { id: 'drug', en: 'Opening a medicine bottle and pouring the pills into a box.', zh: '打开药瓶，将药丸倒入盒子中。' },
       { id: 'fold_tower', en: 'Straighten the towel, fold it into a square, and place it aside.', zh: '铺平毛巾，将其折叠成正方形，然后放在一旁。' },
-      { id: 'pencil_box', en: 'Organize the pencil case by adjusting its position, placing the pens and eraser inside, and then closing it.', zh: '整理文具盒，调整其位置，将钢笔和橡皮擦放入其中，然后合上。' },
+      { id: 'pencil_box', en: 'Organize the pencil case by adjusting its position, placing the pens and eraser inside, and then closing it.', zh: '整理文具盒，调整其位置，将笔和橡皮擦放入其中，然后合上。' },
       { id: 'pingpang', en: 'Picking up a ping-pong paddle, placing it into a case, closing the lid, and zipping it up.', zh: '拿起乒乓球拍，放入拍套中，盖上盖子并拉上拉链。' },
       { id: 'sort_fruits', en: 'Sorting fruits by placing the watermelon in the pink plate, the banana in the yellow plate, and the avocado in the green plate.', zh: '对水果进行分类，将西瓜放入粉色盘子，香蕉放入黄色盘子，牛油果放入绿色盘子。' },
       { id: 'stack_block', en: 'Stacking colored blocks in a specific order: red at the bottom, green in the middle, and yellow on top.', zh: '按特定顺序堆叠彩色积木：红色在底部，绿色在中间，黄色在顶部。' },
